@@ -3,10 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/VpnKey';
 import Typography from '@material-ui/core/Typography';
@@ -42,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
 
-    const [login, setLogin] = useState(``);
-    const [password, setPassword] = useState(``);
+    const [login, setLogin] = useState(`vasia`);
+    const [password, setPassword] = useState(`12345678`);
     const [isLoginCorrect, setIsLoginCorrect] = useState(true);
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
@@ -89,6 +85,7 @@ export default function SignIn() {
                 </Typography>
 
                     <TextField
+                        value={login}
                         error={!isLoginCorrect}
                         className={classes.input}
                         variant="outlined"
@@ -104,6 +101,7 @@ export default function SignIn() {
                     />
 
                     <TextField
+                        value={password}
                         error={!isPasswordCorrect}
                         className={classes.input}
                         variant="outlined"

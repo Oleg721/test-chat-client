@@ -1,6 +1,6 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import {promiseReducer, authReducer} from "../reducers";
+import {promiseReducer, authReducer, webSocketReducer} from "../reducers";
 import rootSaga from '../sagas'
 
 
@@ -8,7 +8,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(combineReducers({
     auth : authReducer,
-    promise : promiseReducer
+    promise : promiseReducer,
+    ws: webSocketReducer
 }), applyMiddleware(sagaMiddleware))
 
 
