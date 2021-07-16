@@ -1,22 +1,24 @@
 import { eventChannel, END } from 'redux-saga';
-import { put, takeEvery, takeLatest, take} from 'redux-saga/effects'
+import {put, takeEvery, takeLatest, take, call} from 'redux-saga/effects'
 import {actionPromise, actionWSConnectSuccess, actionWSDisconnect, actionWSConnectError} from "../actions";
+import store from "../store";
+
 
 export default function* watchWebSocketAction() {
     yield takeLatest(`GET_WS_CONNECT`, getWebSocketConnect);
 }
 
-let authToken;
 
-function* getWebSocketConnect({port, authToken: token}) {
 
-    authToken = token;
+function* getWebSocketConnect({port, authToken}) {
+
+
     let socket;
     let socketChannel;
 
     try {
-        socket = yield createWebSocketConnection(port);
-        yield put(actionWSConnectSuccess());
+        socket = yield createWebSocketConnection(authToken)(port);
+        // yield put(actionWSConnectSuccess());
         console.log(socket);
         socketChannel = yield createSocketChannel(socket);
     }catch (err){
@@ -24,43 +26,55 @@ function* getWebSocketConnect({port, authToken: token}) {
     }
 
     while (true) {
-        const payload = yield take(socketChannel);
-        console.log(payload);
+        const {type, data} = yield take(socketChannel);
+
+        if(!type) return;
+        try {
+            const message = JSON.parse(data);
+
+            if(`users` in message && `messages` in message){
+                yield put(actionWSConnectSuccess())
+            }
+        }catch (e){
+            console.log(`NOT_JSON`);
+        }
+
     }
 }
 
 
+function createWebSocketConnection(authToken) {
+    return (port)=> {
+        return new Promise((resolve, reject) => {
+            const socket = new WebSocket(port);
 
-function createWebSocketConnection(port) {
-    return new Promise((resolve, reject) => {
-        const socket = new WebSocket(port);
+            socket.onopen = function () {
+                console.log(authToken)
+                socket.send(JSON.stringify({action: 'CHECK_USER' , authToken: authToken}));
+                resolve(socket);
+            };
 
-        socket.onopen = function () {
-            console.log(authToken)
-            socket.send(JSON.stringify({action: 'CHECK_USER' , authToken: authToken}));
-            resolve(socket);
-        };
-
-        socket.onerror = function (evt) {
-            reject(evt);
-        }
-    });
+            socket.onerror = function (evt) {
+                reject(evt);
+            }
+        });
+    }
 }
 
 function createSocketChannel(socket) {
-    return eventChannel(emit => {
-        socket.onmessage = (event) => {
-            emit(event.data)
-        };
+        return eventChannel(emit => {
+            socket.onmessage = (event) => {
+                emit({type: `MESSAGE`, data: event.data})
+            };
 
-        socket.onclose = () => {
-            emit(END);
-        };
+            socket.onclose = () => {
+                emit(END);
+            };
 
-        const unsubscribe = () => {
-            socket.onmessage = null;
-        };
+            const unsubscribe = () => {
+                socket.onmessage = null;
+            };
 
-        return unsubscribe;
-    });
+            return unsubscribe;
+        });
 }

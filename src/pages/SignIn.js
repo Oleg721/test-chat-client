@@ -79,7 +79,7 @@ export default function SignIn() {
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
-                </Avatar>
+                </Avatar>        //await user.addMessage(message)
                 <Typography component="h1" variant="h5" >
                     Sign in / Sign Up
                 </Typography>
