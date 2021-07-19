@@ -4,14 +4,15 @@ import SignIn from './pages/SignIn'
 import Main from './pages/Main'
 import store from "./store";
 import {Provider}   from 'react-redux';
-import {actionGetWebSocketConnect} from "./actions";
+import {actionGetSocketConnect} from "./actions";
 import {useEffect, useState} from "react";
 
+/////////////TMP///////////////////////////////////
+//const token = store.getState().auth.authToken /*|| 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibG9naW4iOiJ2YXNpYSIsImlhdCI6MTYyNjM2NDA5M30.zyokOxbC6cppYj6BjQpU2w1N6Mi0bBSFZ_TJtKSkYdY';*/
+//const token = store.getState().auth.authToken || null;
 
+//////////////////////////////////////////////
 
-console.log(store)
-window.localStorage.authToken && !store.getState().ws.isConnect && console.log(`Token is this`)
-window.localStorage.authToken && !store.getState().ws.isConnect && store.dispatch(actionGetWebSocketConnect())
 
 console.log(store.getState())
 store.subscribe(()=> console.log(store.getState()))
@@ -23,6 +24,12 @@ function App() {
 
     const [isConnected, setIsConnected] = useState(store.getState().ws.isConnect)
 
+
+    useEffect(() => {
+        console.log(`token = ` + (store.getState().auth.authToken /*|| window.localStorage.authToken*/))
+        window.localStorage.authToken && !store.getState().ws.isConnect && console.log(`Token is this`)
+        window.localStorage.authToken && !store.getState().ws.isConnect && store.dispatch(actionGetSocketConnect(store.getState().auth.authToken))
+    },[])
 
     useEffect(() => {
 

@@ -3,7 +3,8 @@ import watchPromiseAsync from "./promiseSaga";
 import watchAsyncUserAction from "./userSaga";
 import watcherAuthorization from "./authSaga";
 import watchAsyncMessageAction from "./messageSaga";
-import watchWebSocketAction from "./wsSagas";
+import watchSocketAction from "./socketSagas";
+
 
 export default function* rootSaga() {
     yield all([
@@ -11,7 +12,8 @@ export default function* rootSaga() {
         watchAsyncUserAction(),
         watcherAuthorization(),
         watchAsyncMessageAction(),
-        watchWebSocketAction()
+        watchSocketAction()
+
     ])
 }
 

@@ -1,7 +1,8 @@
-import webSocketReducer from './webSocketReducer'
+import socketReducer from './socketReducer'
 import authReducer from './authReducer'
+import userReducer from './userReducer'
 
-export {webSocketReducer, authReducer}
+export {socketReducer, authReducer, userReducer}
 
 export function promiseReducer(state={},{type, status, payload, error, name} ){
 

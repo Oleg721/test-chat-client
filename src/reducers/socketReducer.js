@@ -1,22 +1,19 @@
 export default (state = {isConnect: false}, action) => {
 
-    if (action.type === 'WS_CONNECT_SUCCESS'){
-        console.log('DISCONNECT')
+    if (action.type === 'SOCKET_CONNECT_SUCCESS'){
+        console.log('CONNECT')
         return {isConnect : true}
     }
 
-    if (action.type === 'WS_CONNECT_ERROR'){
+    if (action.type === 'SOCKET_CONNECT_ERROR'){
         return {error : action.err}
     }
 
-    if (action.type === 'WS_DISCONNECT'){
+    if (action.type === 'SOCKET_DISCONNECT' || action.type === 'LOGOUT'){
         console.log('DISCONNECT')
         return {isConnect : false}
     }
 
-    if (action.type === 'LOGOUT'){
-        return {}
-    }
 
     return state
 }
