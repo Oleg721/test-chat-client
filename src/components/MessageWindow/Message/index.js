@@ -4,6 +4,9 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
+import UserAvatar from '../../UserAvatar'
+import {useSelector} from "react-redux";
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -11,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(4),
         height: theme.spacing(4),
     },
-
-
 }));
 
 
-export default ({message, login, isMyMessage})=>{
+export default ({message : {text, authorColor , authorLogin, UserId} })=>{
+
     const classes = useStyles();
+    const isMyMessage = UserId === useSelector(state => state.auth.payload.id )
 
     return (<>
         <Box display="flex"
@@ -28,7 +31,8 @@ export default ({message, login, isMyMessage})=>{
              height="100%">
 
             <Box ml={1} mr={1} display="flex" order={isMyMessage ? 1 : 0} >
-                <Avatar className={classes.small} >{`T`}</Avatar>
+                <UserAvatar login={authorLogin} color={authorColor} />
+
             </Box>
             <Paper elevation={3}>
                 <Box display="flex"
@@ -39,10 +43,10 @@ export default ({message, login, isMyMessage})=>{
                      height="100%"
                      p="0 1rem 0 1rem">
                     <Typography color={'primary'} align={isMyMessage ? "right" : "left"}>
-                        {login}
+                        {authorLogin}
                     </Typography>
                     <Typography align={isMyMessage ? "right" : "left"}>
-                        {message}
+                        {text}
                     </Typography>
                 </Box>
             </Paper>

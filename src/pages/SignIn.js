@@ -71,7 +71,7 @@ export default function SignIn() {
     }
 
 
-    //console.log(userValidate({login: login, password: password}) || userValidate.errors)
+
 
     return (
         <Container component="main" maxWidth="xs">

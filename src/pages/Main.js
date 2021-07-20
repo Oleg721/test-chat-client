@@ -25,6 +25,8 @@ import InputBase from '@material-ui/core/InputBase';
 import { alpha } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import {NavigationPanel} from '../components'
+import {MessageWindow} from "../components";
 
 
 const drawerWidth = 240;
@@ -32,12 +34,6 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-    },
-    drawer: {
-        [theme.breakpoints.up('sm')]: {
-            width: drawerWidth,
-            flexShrink: 0,
-        },
     },
     appBar: {
         [theme.breakpoints.up('sm')]: {
@@ -78,15 +74,7 @@ const useStyles = makeStyles((theme) => ({
         }
 
     },
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+
 
     inputRoot: {
         color: 'inherit',
@@ -99,15 +87,6 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             width: '100%',
         },
-    },
-    small: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-    },
-    userList: {
-        '& .MuiListItemAvatar-root':{
-        minWidth: '45px',
-        }
     },
 
 }));
@@ -122,27 +101,10 @@ function Main(props) {
         setMobileOpen(!mobileOpen);
     };
 
-    const drawer = (
-        <div>
-            <div className={classes.toolbar} />
-            <Divider />
-            <List >
-                {['Inbox', 'Starred', 'Send email', 'Drafts', 'Infbox', 'Starreddd', 'Sendss emailSendmail', 'Draffts', 'Inbox', 'Starred', 'Send email', 'Drafts', 'Inbox', 'Starred', 'Send email', 'Drafts', 'Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem className={classes.userList} button key={Math.random()}>
-                        <ListItemAvatar>
-                            <Avatar className={classes.small}>{text[0].toUpperCase()}</Avatar></ListItemAvatar>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
-
-        </div>
-    );
-
-    const testMessage = (
+/*    const testMessage = (
         <div>
 <Box component="span">
-        <Avatar className={classes.small}>{`T`}</Avatar>
+        <UserAvatar className={classes.small}>{`T`}</UserAvatar>
 
     <Paper elevation={3}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -170,7 +132,7 @@ function Main(props) {
             </Typography>
 
         </div>
-    );
+    );*/
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -209,40 +171,13 @@ function Main(props) {
 
                 </Toolbar>
             </AppBar>
-            <nav className={classes.drawer} aria-label="mailbox folders">
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-                <Hidden xsDown implementation="css">
-                    <Drawer
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        variant="permanent"
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-            </nav>
+            <NavigationPanel mobileOpen={mobileOpen}
+                             container={container}
+                             handleDrawerToggle={()=>handleDrawerToggle()}/>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {testMessage}
+                <MessageWindow/>
+  {/*              {testMessage}*/}
             </main>
         </div>
     );

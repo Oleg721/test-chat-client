@@ -14,32 +14,28 @@ import {useEffect, useState} from "react";
 //////////////////////////////////////////////
 
 
-console.log(store.getState())
 store.subscribe(()=> console.log(store.getState()))
 
 
-let i = true;
-
 function App() {
 
-    const [isConnected, setIsConnected] = useState(store.getState().ws.isConnect)
-
+    const [isAuthorized, setIsConnected] = useState(!!Object.keys(store.getState().user).length);
 
     useEffect(() => {
-        console.log(`token = ` + (store.getState().auth.authToken /*|| window.localStorage.authToken*/))
-        window.localStorage.authToken && !store.getState().ws.isConnect && console.log(`Token is this`)
-        window.localStorage.authToken && !store.getState().ws.isConnect && store.dispatch(actionGetSocketConnect(store.getState().auth.authToken))
+
+        window.localStorage.authToken && !store.getState().ws.socket && console.log(`Token is this`)
+
+        window.localStorage.authToken &&
+        !store.getState().ws.user &&
+        store.dispatch(actionGetSocketConnect(store.getState().auth.authToken))
     },[])
 
     useEffect(() => {
-
         const unsubscribe = store.subscribe(()=>{
-            if(isConnected === store.getState().ws.isConnect)return;
-            setIsConnected(store.getState().ws.isConnect)
-            //setTimeout(()=>setIsConnected(store.getState().ws.isConnect), 2000)
+            if(isAuthorized === !!Object.keys(store.getState().user).length)return;
+            setIsConnected(!!Object.keys(store.getState().user).length)
         })
 
-        console.log(`>>>>>>> ${isConnected}`)
         return ()=>{
             unsubscribe();
         }
@@ -52,7 +48,7 @@ function App() {
 
                 <Router>
 
-                    {isConnected ? <Redirect to={'/'}/> : <Redirect to={'/sign-in'}/> }
+                    {isAuthorized ? <Redirect to={'/'}/> : <Redirect to={'/sign-in'}/> }
 
                     <Route exact path='/sign-in'>
                         <SignIn/>

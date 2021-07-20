@@ -17,7 +17,7 @@ function jwt_decode(token) {
     if(!token || token === `undefined` || token === `null`) {
         return ``};
     try {
-        let i =  window.atob(token.match(/(?<=[.]).+(?=[.])/));
+        let i =  window.atob(token.split(`.`)[1]);
         console.log(i);
         return JSON.parse(i);
     } catch (e) {

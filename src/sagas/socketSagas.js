@@ -1,70 +1,36 @@
 import {put, takeEvery, takeLatest, take, call} from 'redux-saga/effects';
 import {io} from "socket.io-client";
 import { eventChannel, END } from 'redux-saga';
-import {testHandlers,usersHandlers} from "../handlers";
-import {actionGetUsersAction} from "../actions"
+import {registerUserHandlers, registerMessageHandlers} from "../handlers";
+import {actionGetUsersAction, actionSocketConnectSuccess} from "../actions"
 
 export default function* watchSocketAction() {
-    yield takeLatest(`GET_SOCKET_CONNECT`, getSocketConnect);
+    yield takeLatest(`GET_SOCKET_CONNECT`, getSocketConnection);
 
 }
 
 
-function createSocketChannel(socket) {
 
-    return eventChannel(emit => {
+function* getSocketConnection(authToken) {
+    const socket = yield createSocketConnection(authToken);
+    yield put(actionSocketConnectSuccess(socket));
+    yield call(registerMessageHandlers, socket);
+    yield call(registerUserHandlers, socket);
 
-        socket.on(`test`, testHandlers);
-        socket.on(`users`, usersHandlers);
-
-
-        const unsubscribe = () => {
-            socket.off(`test`, testHandlers);
-        }
-
-        return unsubscribe
-    })
 }
-
 
 
 function createSocketConnection(authToken) {
 
-
-        return new Promise((resolve, reject) => {
-
-            const socket = io(`http://${process.env.REACT_APP_SOCKET_HOST}:${process.env.REACT_APP_SOCKET_PORT}/`,{
-                transports: ["websocket"],
-                auth: {
-                    token: authToken.authToken
-                }}
-            )
-
-            socket.on(`connect`, ()=>{
-                resolve(socket);
-            });
-
-            socket.on(`connect_error`, (evt)=>{
-                reject(evt);
-            });
+    return new Promise((resolve, reject) => {
+        const options = {transports: ["websocket"],auth: {token: authToken.authToken}}
+        const socket = io(`http://${process.env.REACT_APP_SOCKET_HOST}:${process.env.REACT_APP_SOCKET_PORT}/`, options)
+        socket.on(`connect`, ()=>{
+            resolve(socket);
         });
+        socket.on(`connect_error`, (evt)=>{
+            reject(evt);
+        });
+    });
 }
 
-
-export function* getSocketConnect(authToken) {
-
-    try {
-        const socket = yield createSocketConnection(authToken);
-        const socketChannel = yield createSocketChannel(socket);
-
-        // yield call(()=>{
-        //     socket.emit(`users`)
-        // })
-
-        while (true) {
-                yield take(socketChannel);
-        }
-    } catch (err){
-        console.error('socket error:', err)
-    }
-}

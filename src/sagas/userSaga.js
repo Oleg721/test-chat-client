@@ -9,7 +9,6 @@ export default function* watchAsyncUserAction() {
 
 
 function* getUsersAsync(socket) {
-    console.log(socket)
     //socket.emit("users")
 }
 
