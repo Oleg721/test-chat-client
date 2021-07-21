@@ -1,13 +1,7 @@
-import store from "../store";
-import {actionSocketConnectSuccess, actionGetUsersAction} from "../actions";
 import registerUserHandlers from './userHandlers';
 import registerMessageHandlers from './messageHandlers';
+import registerSocketHandlers from './socketHendler';
 
 
-export const usersHandlers = (data)=>{
-    store.dispatch(actionSocketConnectSuccess());
-    store.dispatch(actionGetUsersAction(data));
-}
 
-
-export {registerUserHandlers, registerMessageHandlers}
+export {registerUserHandlers, registerMessageHandlers, registerSocketHandlers}

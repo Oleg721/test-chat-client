@@ -8,18 +8,10 @@ import UserAvatar from '../../UserAvatar'
 import {useSelector} from "react-redux";
 
 
-const useStyles = makeStyles((theme) => ({
-
-    small: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-    },
-}));
-
 
 export default ({message : {text, authorColor , authorLogin, UserId} })=>{
 
-    const classes = useStyles();
+// TODO: lift state up
     const isMyMessage = UserId === useSelector(state => state.auth.payload.id )
 
     return (<>

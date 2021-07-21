@@ -13,9 +13,9 @@ export default function* watcherAuthorization(){
 function* signInSaga({user: {login, password}}){
     console.log(`SIGN_IN_SAGA`);
     const {authToken} = yield sendFetch(`/sign-in`)({login: login, password: password});
+    //TODO: localStorage? get set
     yield window.localStorage.authToken = authToken;
     yield put(actionAuthLogin(authToken))
     yield put(actionGetSocketConnect(authToken))
 }
-
 

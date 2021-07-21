@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Switch, Route, Link, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Link, Redirect, useHistory} from "react-router-dom";
 import SignIn from './pages/SignIn'
 import Main from './pages/Main'
 import store from "./store";
@@ -7,26 +7,24 @@ import {Provider}   from 'react-redux';
 import {actionGetSocketConnect} from "./actions";
 import {useEffect, useState} from "react";
 
-/////////////TMP///////////////////////////////////
-//const token = store.getState().auth.authToken /*|| 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibG9naW4iOiJ2YXNpYSIsImlhdCI6MTYyNjM2NDA5M30.zyokOxbC6cppYj6BjQpU2w1N6Mi0bBSFZ_TJtKSkYdY';*/
-//const token = store.getState().auth.authToken || null;
-
-//////////////////////////////////////////////
-
-
 store.subscribe(()=> console.log(store.getState()))
-
 
 function App() {
 
     const [isAuthorized, setIsConnected] = useState(!!Object.keys(store.getState().user).length);
+    const  history = useHistory()
+
+    // useEffect(() => {
+    //     history.push('/')
+    // }, [isAuthorized])
 
     useEffect(() => {
 
-        window.localStorage.authToken && !store.getState().ws.socket && console.log(`Token is this`)
+        window.localStorage.authToken && !store.getState().socket && console.log(`Token is this`)
 
+        // TODO: remove direct access to the store
         window.localStorage.authToken &&
-        !store.getState().ws.user &&
+        !Object.keys(store.getState().user).length &&
         store.dispatch(actionGetSocketConnect(store.getState().auth.authToken))
     },[])
 
@@ -58,8 +56,6 @@ function App() {
                             <Main/>
                         </Route>
 
-
-
                     </Switch>
                 </Router>
             </div>
@@ -68,3 +64,5 @@ function App() {
 }
 
 export default App;
+
+

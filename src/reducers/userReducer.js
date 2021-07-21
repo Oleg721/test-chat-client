@@ -1,10 +1,12 @@
+
+
 export default (state = {}, action) => {
 
     if (action.type === 'GET_USERS'){
         return {...action.users}
     }
-
-    if(action.type === `REMOVE_USER`){
+console.log(action.role)
+    if(action.type === `REMOVE_USER` && action.role !== "ADMIN"){
         const { [action.id] : leaveUser ,...restState} = state;
         return restState
     }
@@ -14,6 +16,9 @@ export default (state = {}, action) => {
         return {[id]: usersData, ...state}
     }
 
+    if(action.type === `SOCKET_DISCONNECT`){
+        return {}
+    }
 
     return state
 }

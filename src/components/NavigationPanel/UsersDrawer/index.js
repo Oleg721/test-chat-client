@@ -35,20 +35,24 @@ export default ()=>{
 
     useSelector(state => {
         if(users !== state.user){
+            debugger
             setUsers(state.user);
         }
     })
 
+    const login = useSelector(state => state.auth.payload?.login)
+
 
     return (
         <div>
-            <div className={classes.toolbar} />
+            <div className={classes.toolbar} >
+                Hello {login}
+            </div>
             <Divider />
             <List >
+                {/*TODO: https://www.npmjs.com/package/reselect*/}
                 {objToArr(users).map(user => {
-                    return <UserItem
-                        key={user.id}
-                        user={user}/>
+                    return <UserItem key={user.id} user={user}/>
                 })}
             </List>
 

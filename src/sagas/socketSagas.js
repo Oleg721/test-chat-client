@@ -1,8 +1,9 @@
 import {put, takeEvery, takeLatest, take, call} from 'redux-saga/effects';
 import {io} from "socket.io-client";
-import { eventChannel, END } from 'redux-saga';
-import {registerUserHandlers, registerMessageHandlers} from "../handlers";
-import {actionGetUsersAction, actionSocketConnectSuccess} from "../actions"
+import {registerUserHandlers,
+        registerMessageHandlers,
+        registerSocketHandlers} from "../handlers";
+import {actionSocketConnectSuccess} from "../actions"
 
 export default function* watchSocketAction() {
     yield takeLatest(`GET_SOCKET_CONNECT`, getSocketConnection);
@@ -16,6 +17,8 @@ function* getSocketConnection(authToken) {
     yield put(actionSocketConnectSuccess(socket));
     yield call(registerMessageHandlers, socket);
     yield call(registerUserHandlers, socket);
+    yield call(registerSocketHandlers, socket);
+
 
 }
 

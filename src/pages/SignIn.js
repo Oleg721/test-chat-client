@@ -52,7 +52,7 @@ export default function SignIn() {
         isPasswordCorrect || setIsPasswordCorrect(true);
         !errorMessage || setErrorMessage('');
 
-        if(userValidate({login: login, password: password})) {
+        if(userValidate({login, password})) {
 
             dispatch(actionSignIn({
                 login: login,
@@ -62,7 +62,9 @@ export default function SignIn() {
 
             const nameErrorField = userValidate.errors[0].instancePath.replace("/","")
 
-            if(nameErrorField === "login")setIsLoginCorrect(false);
+            if(nameErrorField === "login") {
+                setIsLoginCorrect(false);
+            }
             if(nameErrorField === "password")setIsPasswordCorrect(false)
 
             setErrorMessage( `Field "${nameErrorField.charAt(0).toUpperCase() +

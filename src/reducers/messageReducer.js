@@ -7,6 +7,14 @@ export default (state = [], action) => {
         return [...action.messages]
     }
 
+    if (action.type === 'ADD_MESSAGES'){
+        console.log('ADD_MESSAGES')
+        return [...state, action.message]
+    }
+
+    if(action.type === `SOCKET_DISCONNECT`){
+        return []
+    }
 
     return state
 }
