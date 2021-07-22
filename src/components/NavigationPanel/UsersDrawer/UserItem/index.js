@@ -10,7 +10,6 @@ import {useSelector} from "react-redux";
 
 
 const useStyles = makeStyles((theme) => ({
-
     small: {
         width: theme.spacing(4),
         height: theme.spacing(4),
@@ -21,27 +20,21 @@ const useStyles = makeStyles((theme) => ({
             minWidth: '45px',
         }
     },
-
 }));
 
-
-
-export default ({user})=>{
-
-    const role = useSelector(state => state.auth.payload?.role)
+export default ({userData, value: user, onChangeState})=>{
     const classes = useStyles({color : user.color});
-
     return(
         <ListItem className={classes.userList} >
-
             <ListItemAvatar>
-                    <UserAvatar login={user.login} color={user.color}/>
+                <UserAvatar login={user.login} color={user.color}/>
             </ListItemAvatar>
-<Box display="flex" flexDirection="column">
-    <ListItemText primary={user.login} />
-    {console.log(role)}
-    {role === "ADMIN" && <UserStateSelect id={user.id} state={user.state} />}
-</Box>
+            <Box display="flex" flexDirection="column">
+                <ListItemText primary={user.login} />
+                {userData.role === "ADMIN" &&
+                userData.id !== +user.id &&
+                <UserStateSelect state={user.state} onChangeState={onChangeState}/>}
+            </Box>
         </ListItem>
     )
 }

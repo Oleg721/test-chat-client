@@ -9,7 +9,7 @@ export default (state = [], action) => {
         console.log('ADD_MESSAGES')
         return [...state, action.message]
     }
-    if(action.type === 'SOCKET_DISCONNECT'){
+    if(action.type === 'SOCKET_DISCONNECT' || action.type === `LOGOUT`){
         return []
     }
 

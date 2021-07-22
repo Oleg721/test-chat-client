@@ -23,27 +23,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default ({id, state})=>{
+export default ({state, onChangeState})=>{
 
+   // const [userState, setUserState] = useState(state);
     const classes = useStyles();
-    const [userState, setUserState] = useState("ACTIVE");
-    const socket = useSelector(state => state.socket );
-
-    const [testCont, setTestCon] = useContext(TestContext);
-    console.log('######################3')
-    console.log(testCont)
-
-    // useSelector()
-
     return(
-
         <Select className={classes.userSelect}
                 onChange={(event)=>{
-                    console.log( id + " => " + event.target.value);
-                    // TODO: remove
-                    // socket.emit('user:setState', id, event.target.value)
-                }
-                }
+                    onChangeState(event.target.value);
+                 //   setUserState(event.target.value)
+                }}
                 defaultValue={state}>
             <MenuItem value="ACTIVE">Active</MenuItem>
             <MenuItem value="MUTED">Muted</MenuItem>

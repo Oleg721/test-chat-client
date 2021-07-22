@@ -13,7 +13,7 @@ export default (state = {}, action) => {
         const {id, ...usersData} = action.user;
         return {[id]: usersData, ...state}
     }
-    if(action.type === `SOCKET_DISCONNECT`){
+    if(action.type === `SOCKET_DISCONNECT` || action.type === `LOGOUT`){
         return {}
     }
     return state

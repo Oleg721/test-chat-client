@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {NavigationPanel, MessageWindow, UserToolBar} from '../components'
@@ -16,24 +16,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Main() {
-
+export default function Main() {
     const [socket, setSocket] = useState(null);
-    const token = useSelector(state => state.auth.authToken || localStorage.getItem(`authToken`));
+    const token = localStorage.getItem(`authToken`);
     const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
-    const userId = useSelector(state => state.auth.payload?.id);
+    const users = useSelector(state => {
+         return  Object.entries(state.users)
+             .reduce((accumulator,item,index,arr)=>{
+                 accumulator.push({id: item[0],...item[1]})
+                 return accumulator
+         },[])
+     });
+    const userData = useSelector(state => state.auth.payload) || {};
+    const messages = useSelector(state => state.messages);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isDisabled, setDisabled] = useState(useSelector(state => state.auth.payload?.state === 'MUTED'));
 
-    const handleDrawerToggle = () => {
+    function handleDrawerToggle(){
         setMobileOpen(!mobileOpen);
-    };
+    }
     function clickHandle(text) {
-        socket.emit('message:add', text, userId);
+        socket.emit('message:add', text, userData.id);
         setDisabled(true);
-        setTimeout(()=> setDisabled(false), 20000)
+        setTimeout(()=> setDisabled(false), 20000);
+    }
+    function logoutHandle() {
+        dispatch(actionAuthLogout());
+        socket.disconnect(true);
+    }
+    function changeStateHandle(state) {
+        socket.emit('user:setState', userData.id, state);
     }
 
     useEffect(() => {
@@ -45,15 +59,16 @@ function Main() {
         socket.on('user:add', addUser);
         socket.on('user:leave', removeUser);
         socket.on(`muted`, ()=>{
-            setDisabled(true)
-        })
+            setDisabled(true);
+        });
         socket.on(`active`, ()=>{
             setDisabled(false)
+        });
+        socket.on('disconnect', (reason) => {
+                // history.push('/sign-in');
+            //dispatch(actionSocketDisconnect());
         })
-        socket.on('disconnect', () => {
-            history.push('/sign-in');
-            dispatch(actionSocketDisconnect());
-        })
+
         dispatch(actionAuthLogin(token));
         setSocket(socket);
     }, []);
@@ -65,10 +80,15 @@ function Main() {
                     <UserToolBar handleDrawerToggle={handleDrawerToggle}
                                  isDisabled={isDisabled}
                                  onSendMSG={clickHandle}/>
-                <NavigationPanel mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}/>
-                <MessageWindow/>
+                <NavigationPanel mobileOpen={mobileOpen}
+                                 users={users}
+                                 userData={userData}
+                                 onLogout={logoutHandle}
+                                 onChangeState={changeStateHandle}
+                                 handleDrawerToggle={handleDrawerToggle}/>
+                <MessageWindow authorId={userData.id} value={messages}/>
             </div>
         </SocketContext.Provider>
     );
 }
-export default Main;
+

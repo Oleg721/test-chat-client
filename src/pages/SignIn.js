@@ -47,10 +47,13 @@ export default function SignIn() {
     const token = useSelector(state => state.auth.authToken);
 
     useEffect(() => {
+        console.log(`before IF`)
         if(token){
-            history.push(`/`)
+            console.log(`after IF`)
+             // history.push(`/`)
         }
-    },[token]);
+    });
+
 
         function checkAndSendForm(){
         isLoginCorrect || setIsLoginCorrect(true);

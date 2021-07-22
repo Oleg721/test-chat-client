@@ -6,11 +6,6 @@ export default (state = {isConnectSuccess: false}, action) => {
         return {isConnectSuccess: true}
     }
 
-    // if (action.type === 'SOCKET_CONNECT_ERROR'){
-    //     return null
-    // }
-    //
-
     if (action.type === 'SOCKET_CONNECT'){
         return {isConnected: true}
     }

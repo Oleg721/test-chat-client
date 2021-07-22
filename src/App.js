@@ -5,9 +5,10 @@ import Main from './pages/Main'
 import store from "./store";
 import {Provider, useDispatch, useSelector} from 'react-redux';
 
-store.subscribe(()=> console.log(store.getState()))
+
 
 function App() {
+    store.subscribe(()=> console.log(store.getState()));
     return (
         <Provider store={store}>
             <div className="App">

@@ -1,22 +1,29 @@
 import React from 'react';
-import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import {makeStyles} from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import UserAvatar from '../../UserAvatar'
 import {useSelector} from "react-redux";
+import {makeStyles} from "@material-ui/core/styles";
+const useStyles = makeStyles((theme) => ({
+    message: {
+        display: 'flex',
 
+    },
+    myMessage: {
 
+    },
+}));
 
-export default ({message : {text, authorColor , authorLogin, UserId} })=>{
+export default function Message({value : {text, authorColor , authorLogin, UserId}, isMyMessage }){
 
 // TODO: lift state up
-    const isMyMessage = UserId === useSelector(state => state.auth.payload?.id )
+//     const isMyMessage = UserId === useSelector(state => state.auth.payload?.id )
+    const classes = useStyles();
 
-    return (<>
+    return (<React.Fragment>
         <Box display="flex"
-
+             className={classes.message}
              alignSelf= {isMyMessage ? "flex-end" : "flex-start"}
              flexDirection="row"
              m={`3ch ${isMyMessage ? "0 0 6ch": "6ch 0 0 "}`}
@@ -43,5 +50,5 @@ export default ({message : {text, authorColor , authorLogin, UserId} })=>{
                 </Box>
             </Paper>
         </Box>
-    </>)
+    </React.Fragment>)
 };

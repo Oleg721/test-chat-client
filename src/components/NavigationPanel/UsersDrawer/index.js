@@ -3,11 +3,20 @@ import List from "@material-ui/core/List";
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import UserItem from "./UserItem"
-import {useSelector} from "react-redux";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
-    toolbar: theme.mixins.toolbar,
+    toolbar: {
+        display:`flex`,
+        flexDirection: `column`,
+        fontSize: `1.5rem`,
+        alignItems : "center",
+
+        '& button': {
+            width: '5rem',
+            margin: '0.7rem'
+        },
+    },
     drawerPaper: {
         width: drawerWidth,
     },
@@ -17,46 +26,32 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-export default ()=>{
-
-    const [users, setUsers] = useState({});
+export default ({userData, users, onLogout, onChangeState})=>{
     const classes = useStyles();
-
-    useSelector(state => {
-        if(users !== state.user){
-            // debugger
-            setUsers(state.user);
-        }
-    })
-
-    const login = useSelector(state => state.auth.payload?.login)
-
-
     return (
         <div>
             <div className={classes.toolbar} >
-                Hello {login}
+                Hello {userData?.login}
+                <button onClick={onLogout}>LOGOUT</button>
             </div>
             <Divider />
             <List >
-                {/*TODO: https://www.npmjs.com/package/reselect*/}
-                {objToArr(users).map(user => {
-                    return <UserItem key={user.id} user={user}/>
+{/*                TODO: https://www.npmjs.com/package/reselect*/}
+                {users.map(user => {
+                    return <UserItem userData={userData} key={user.id} value={user} onChangeState={onChangeState}/>
                 })}
             </List>
-
         </div>
     );
 }
 
 
 
-function objToArr(users){
-    const arr = []
-    for(let id in users){
-        arr.push({id : id, ...users[id]})
-    }
-    return arr
-}
-
+// function objToArr(users){
+//     const arr = []
+//     for(let id in users){
+//         arr.push({id : id, ...users[id]})
+//     }
+//     return arr
+// }
+//

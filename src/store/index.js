@@ -8,10 +8,9 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(combineReducers({
     auth : authReducer,
-    // promise : promiseReducer,
     socket: socketReducer,
-    user : userReducer,
-    message : messageReducer
+    users : userReducer,
+    messages : messageReducer
 
 }), applyMiddleware(sagaMiddleware))
 

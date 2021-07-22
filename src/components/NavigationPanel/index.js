@@ -1,7 +1,7 @@
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
-import React, {useState} from "react";
-import {alpha, makeStyles} from "@material-ui/core/styles";
+import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
 import UsersDrawer from "./UsersDrawer"
 
 const drawerWidth = 240;
@@ -17,11 +17,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default ({mobileOpen, handleDrawerToggle, container})=>{
+export default ({mobileOpen, handleDrawerToggle, userData, users, onLogout, onChangeState})=>{
 
-    const [users, setUsers] = useState([]);
     const classes = useStyles();
-
     return (<nav className={classes.drawer} aria-label="mailbox folders">
         <Hidden smUp implementation="css">
             <Drawer
@@ -34,7 +32,8 @@ export default ({mobileOpen, handleDrawerToggle, container})=>{
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
                 }}>
-                <UsersDrawer/>
+
+                <UsersDrawer userData={userData} users={users} onLogout={onLogout} onChangeState={onChangeState}/>
             </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -44,7 +43,7 @@ export default ({mobileOpen, handleDrawerToggle, container})=>{
                 }}
                 variant="permanent"
                 open>
-                <UsersDrawer/>
+                <UsersDrawer userData={userData} users={users} onLogout={onLogout} onChangeState={onChangeState}/>
             </Drawer>
         </Hidden>
     </nav>)
