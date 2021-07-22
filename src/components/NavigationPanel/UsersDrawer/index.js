@@ -1,30 +1,20 @@
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import ListItemText from "@material-ui/core/ListItemText";
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import UserItem from "./UserItem"
 import {useSelector} from "react-redux";
 
-
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
-
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
     },
-
     small: {
         width: theme.spacing(4),
         height: theme.spacing(4),
     },
-
-
 }));
 
 
@@ -35,7 +25,7 @@ export default ()=>{
 
     useSelector(state => {
         if(users !== state.user){
-            debugger
+            // debugger
             setUsers(state.user);
         }
     })

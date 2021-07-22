@@ -12,7 +12,7 @@ import {useSelector} from "react-redux";
 export default ({message : {text, authorColor , authorLogin, UserId} })=>{
 
 // TODO: lift state up
-    const isMyMessage = UserId === useSelector(state => state.auth.payload.id )
+    const isMyMessage = UserId === useSelector(state => state.auth.payload?.id )
 
     return (<>
         <Box display="flex"

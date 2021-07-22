@@ -1,21 +1,22 @@
-export default (state = {socket: null}, action) => {
+export default (state = {isConnectSuccess: false}, action) => {
+
 
     if (action.type === 'SOCKET_CONNECT_SUCCESS'){
-        console.log('CONNECT')
-        return action.socket
+        console.log('SOCKET_CONNECT_SUCCESS')
+        return {isConnectSuccess: true}
     }
 
-    if (action.type === 'SOCKET_CONNECT_ERROR'){
-        return null
+    // if (action.type === 'SOCKET_CONNECT_ERROR'){
+    //     return null
+    // }
+    //
+
+    if (action.type === 'SOCKET_CONNECT'){
+        return {isConnected: true}
     }
 
-    if (action.type === 'SOCKET_DISCONNECT' || action.type === 'LOGOUT'){
-        console.log('DISCONNECT')
-        return null
-    }
-
-    if(action.type === `SOCKET_DISCONNECT`){
-        return {}
+    if(action.type === 'SOCKET_DISCONNECT'){
+        return {isConnected: false, isConnectSuccess: false}
     }
 
     return state

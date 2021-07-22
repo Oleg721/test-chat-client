@@ -1,14 +1,12 @@
 import Select from '@material-ui/core/Select';
 import {FormControl, MenuItem} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useSelector} from "react-redux";
-
+import TestContext from "../../../../Context";
 
 const useStyles = makeStyles((theme) => ({
-
     userSelect: {
-
     width: "6rem",
         borderRadius: 4,
         position: 'relative',
@@ -22,20 +20,18 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiInputBase-root': {
         marginLeft: 1,
-
     },
-
 }));
-
-
-
-
 
 export default ({id, state})=>{
 
     const classes = useStyles();
     const [userState, setUserState] = useState("ACTIVE");
     const socket = useSelector(state => state.socket );
+
+    const [testCont, setTestCon] = useContext(TestContext);
+    console.log('######################3')
+    console.log(testCont)
 
     // useSelector()
 
@@ -45,7 +41,7 @@ export default ({id, state})=>{
                 onChange={(event)=>{
                     console.log( id + " => " + event.target.value);
                     // TODO: remove
-                    socket.emit(`user:setState`, id, event.target.value)
+                    // socket.emit('user:setState', id, event.target.value)
                 }
                 }
                 defaultValue={state}>

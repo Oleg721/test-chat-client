@@ -3,10 +3,9 @@ export default (state = {}, action) => {
     if (action.type === 'AUTH_LOGIN'){
         return {authToken: action.jwt, payload: jwt_decode(action.jwt)}
     }
-
     if (action.type === 'LOGOUT'){
         console.log('LOGOUT')
-        localStorage.removeItem(`authToken`);
+        localStorage.removeItem('authToken');
 
         return {}
     }
@@ -14,14 +13,14 @@ export default (state = {}, action) => {
 }
 
 function jwt_decode(token) {
-    if(!token || token === `undefined` || token === `null`) {
-        return ``};
+    if(!token || token === 'undefined' || token === 'null') {
+        return ''};
     try {
-        let i =  window.atob(token.split(`.`)[1]);
+        let i =  window.atob(token.split('.')[1]);
         console.log(i);
         return JSON.parse(i);
     } catch (e) {
-        console.log(`jwt_decode err` + e.name)
+        console.log('jwt_decode err' + e.name)
         return null;
     }
 

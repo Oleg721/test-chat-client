@@ -1,4 +1,3 @@
-import {objToArr} from '../utility'
 
 export default (state = [], action) => {
 
@@ -6,13 +5,11 @@ export default (state = [], action) => {
         console.log('GET_MESSAGES')
         return [...action.messages]
     }
-
     if (action.type === 'ADD_MESSAGES'){
         console.log('ADD_MESSAGES')
         return [...state, action.message]
     }
-
-    if(action.type === `SOCKET_DISCONNECT`){
+    if(action.type === 'SOCKET_DISCONNECT'){
         return []
     }
 

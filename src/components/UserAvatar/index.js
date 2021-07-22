@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default ({login=`z`, color=`red`})=>{
+export default ({login='z', color='red'})=>{
 
     const classes = useStyles({color : color});
 

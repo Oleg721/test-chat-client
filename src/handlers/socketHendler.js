@@ -4,10 +4,9 @@ import {actionSocketDisconnect} from "../actions";
 export default (socket) => {
 
     const disconnect = (reason) => {
-        console.log(`disconnect`);
+        console.log('disconnect');
         store.dispatch(actionSocketDisconnect());
     }
-
 
     socket.on("disconnect", disconnect)
 }

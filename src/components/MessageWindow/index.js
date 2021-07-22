@@ -11,21 +11,21 @@ const useStyles = makeStyles((theme) => ({
 
     content: {
         flexGrow: 1,
-        padding: theme.spacing(1 ,3),
-        height: `93vh`,
+        padding: theme.spacing(1, 3),
+        height: '93vh',
         overflow: "auto",
         backgroundColor: '#eceff1'
     },
 }));
 
 
-export default ()=>{
+export default () => {
 
     const classes = useStyles();
     const [messages, setMessage] = useState([])
     // TODO: remove extra state
     useSelector(state => {
-        if(messages !== state.message){
+        if (messages !== state.message) {
             setMessage(state.message)
         }
     })
@@ -36,17 +36,16 @@ export default ()=>{
     })
 
     return (
-            <main ref={ref} className={classes.content}>
-                <Box display="flex"
-                     flexDirection="column">
+        <main ref={ref} className={classes.content}>
+            <Box display="flex"
+                 flexDirection="column">
 
-                    {messages.map((msg)=>{
-                        return <Message key={msg.id} message={msg}/>
-                    })}
-                </Box>
-            </main>
-        )
-
+                {messages.map((msg) => {
+                    return <Message key={msg.id} message={msg}/>
+                })}
+            </Box>
+        </main>
+    )
 
 }
 

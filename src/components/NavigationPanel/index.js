@@ -5,39 +5,27 @@ import {alpha, makeStyles} from "@material-ui/core/styles";
 import UsersDrawer from "./UsersDrawer"
 
 const drawerWidth = 240;
-// const container = window !== undefined ? () => window().document.body : undefined;
-
-
 const useStyles = makeStyles((theme) => ({
-
     drawer: {
         [theme.breakpoints.up('sm')]: {
             width: drawerWidth,
             flexShrink: 0,
         },
     },
-
     drawerPaper: {
         width: drawerWidth,
     },
-
-
 }));
-
 
 export default ({mobileOpen, handleDrawerToggle, container})=>{
 
     const [users, setUsers] = useState([]);
     const classes = useStyles();
 
-
     return (<nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
             <Drawer
-                // container={container}
                 variant="temporary"
-                // anchor={theme.direction === 'rtl' ? 'right' : 'left'}
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 classes={{
@@ -45,8 +33,7 @@ export default ({mobileOpen, handleDrawerToggle, container})=>{
                 }}
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
-                }}
-            >
+                }}>
                 <UsersDrawer/>
             </Drawer>
         </Hidden>
@@ -56,8 +43,7 @@ export default ({mobileOpen, handleDrawerToggle, container})=>{
                     paper: classes.drawerPaper,
                 }}
                 variant="permanent"
-                open
-            >
+                open>
                 <UsersDrawer/>
             </Drawer>
         </Hidden>
